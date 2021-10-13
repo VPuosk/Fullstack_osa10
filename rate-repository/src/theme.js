@@ -7,7 +7,8 @@ const theme = {
     barFont: '#ccc',
     background: '#CCC',
     repositoryBackground: '#eee',
-    languageBackground: '#55D',
+    languageBackground: '#55d',
+    errorTextColor: '#ee2222',
   },
   fontSizes: {
     body: 14,
