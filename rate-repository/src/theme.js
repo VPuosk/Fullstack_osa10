@@ -5,7 +5,7 @@ const theme = {
     primary: '#0366d6',
     barBackground: '#253030',
     barFont: '#ccc',
-    background: '#888',
+    background: '#CCC',
     repositoryBackground: '#eee',
     languageBackground: '#55D',
   },
