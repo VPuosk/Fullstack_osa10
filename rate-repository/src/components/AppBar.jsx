@@ -4,6 +4,9 @@ import Constants from 'expo-constants';
 import theme from '../theme';
 import Text from './Text';
 import { Link } from 'react-router-native';
+import { useQuery } from '@apollo/client';
+import { GET_AUTHORIZATION } from '../graphql/queries';
+import useSignOut from '../hooks/useSignOut';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,6 +25,57 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
+  const {loading, error, data} = useQuery(GET_AUTHORIZATION, {
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const signOut = useSignOut();
+
+  const onSignOut = async () => {
+    try {
+      await signOut();
+      //console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const viewPerAuth = () => {
+    if (loading) {
+      return (
+        null
+      );
+    }
+
+    if (error) {
+      console.log(error);
+      return (
+        null
+      );
+    }
+
+    if (data.authorizedUser === null) {
+      return (
+        <Pressable>
+          <Link to="/SignIn">
+            <Text style={styles.textbox}>
+              Sign in
+            </Text>
+          </Link>
+        </Pressable>
+      );
+    } else {
+      return (
+        <Pressable onPress={onSignOut}>
+          <Text style={styles.textbox}>
+            Sign out
+          </Text>
+        </Pressable>
+      );
+    }
+  };
+
+
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
@@ -32,13 +86,7 @@ const AppBar = () => {
             </Text>
           </Link>
         </Pressable>
-        <Pressable>
-          <Link to="/SignIn">
-            <Text style={styles.textbox}>
-              Sign in
-            </Text>
-          </Link>
-        </Pressable>
+        {viewPerAuth()}
       </ScrollView>
     </View>
   );

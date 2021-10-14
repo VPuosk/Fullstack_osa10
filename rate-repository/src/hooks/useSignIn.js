@@ -16,7 +16,7 @@ const useSignIn = () => {
         password: password
       }
     });
-    console.log(data.authorize.accessToken);
+    //console.log(data.authorize.accessToken);
     await authStorage.setAccessToken(data.authorize.accessToken);
     apolloClient.resetStore();
     history.push('/');
