@@ -23,6 +23,16 @@ const theme = {
     normal: '400',
     bold: '700',
   },
+
+  bigbox: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    backgroundColor: '#55d',
+    color: '#ccc',
+    padding: 10,
+    margin: 5
+  },
 };
 
 export default theme;

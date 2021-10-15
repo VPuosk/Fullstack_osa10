@@ -1,7 +1,8 @@
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, Pressable } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
+import { useHistory } from 'react-router-native';
 
 const styles = StyleSheet.create({
   separator: {
@@ -12,10 +13,16 @@ const styles = StyleSheet.create({
 const ItemSeparator = () => <View style={styles.separator} />;
 
 export const RepositoryListContainer = ({ repositories }) => {
+  const history = useHistory();
   
   const repositoryNoodles = repositories
     ? repositories.edges.map(edge => edge.node)
     : [];
+
+  const handlePress = (id) => {
+    //console.log("what",id);
+    history.push(`/Repository/${id}`);
+  };
 
   //console.log(repositoryNoodles);
   return (
@@ -24,7 +31,9 @@ export const RepositoryListContainer = ({ repositories }) => {
       ItemSeparatorComponent={ItemSeparator}
       // other props
       renderItem={({ item }) => (
-        <RepositoryItem item={item} />
+        <Pressable onPress={() => handlePress(item.id)}>
+            <RepositoryItem render={false} item={item} />
+        </Pressable>
       )}
     />
   );

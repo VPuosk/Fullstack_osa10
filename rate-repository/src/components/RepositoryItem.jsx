@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Pressable, Linking } from 'react-native';
 import theme from '../theme';
 import Text from './Text';
 
@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
     textShadowColor: '#33F',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 1
-  }
+  },
+  githubBox: theme.bigbox,
 });
 
 const renderThousandsToRI = ( oldValue ) => {
@@ -49,7 +50,32 @@ const renderThousandsToRI = ( oldValue ) => {
   }
 };
 
-const RepositoryItem = ({ item }) => {
+const SingleRepositoryItem = ({ render, item }) => {
+  
+  if (!render) {
+    return (
+      null
+    );
+  }
+
+  const handleIt = () => {
+    Linking.openURL(item.url);
+  };
+
+  //console.log('maybeRender?');
+  return (
+    <Pressable onPress={handleIt}>
+      <View style={styles.container}>
+        <Text style={styles.githubBox}>
+          Open in GitHub
+        </Text>
+      </View>
+    </Pressable>
+  );
+};
+
+const RepositoryItem = ({ render, item }) => {
+  //console.log(item.url);
   return (
     <View testID={item.id} key={item.id} style={styles.verticalcontainer}>
       <View style={styles.container}>
@@ -83,6 +109,7 @@ const RepositoryItem = ({ item }) => {
           <Text>Rating</Text>
         </View>        
       </View>
+      <SingleRepositoryItem render={render} item={item}/>
     </View>
   );
 };
