@@ -32,12 +32,18 @@ const styles = StyleSheet.create({
   }
 });
 
-const renderThousandsToRI = ( stargazersCount ) => {
-  if (stargazersCount >= 1000) {
-    const newCount = (stargazersCount/1000);
+const renderThousandsToRI = ( oldValue ) => {
+  if (oldValue >= 1000) {
+    const newCount = (oldValue/1000);
     return (
       <Text fontWeight="bold">
         {newCount.toFixed(1)}k
+      </Text>
+    );
+  } else {
+    return (
+      <Text fontWeight="bold">
+        {oldValue}
       </Text>
     );
   }
@@ -45,7 +51,7 @@ const renderThousandsToRI = ( stargazersCount ) => {
 
 const RepositoryItem = ({ item }) => {
   return (
-    <View key={item.id} style={styles.verticalcontainer}>
+    <View testID={item.id} key={item.id} style={styles.verticalcontainer}>
       <View style={styles.container}>
         <Image
           style={styles.smallImage}
