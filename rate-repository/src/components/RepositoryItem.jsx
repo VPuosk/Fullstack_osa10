@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexGrow: 1,
+    flexShrink: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: theme.colors.repositoryBackground
@@ -18,8 +19,10 @@ const styles = StyleSheet.create({
   verticalcontainer: {
     display: 'flex',
     flexGrow: 1,
+    flexShrink: 1,
     flexDirection: 'column',
-    backgroundColor: theme.colors.repositoryBackground
+    backgroundColor: theme.colors.repositoryBackground,
+    padding: 3
   },
   languageBox: {
     //backgroundColor: theme.colors.languageBackground,
