@@ -66,11 +66,20 @@ const AppBar = () => {
       );
     } else {
       return (
-        <Pressable onPress={onSignOut}>
-          <Text style={styles.textbox}>
-            Sign out
-          </Text>
-        </Pressable>
+        <>
+          <Pressable>
+            <Link to="/Review">
+              <Text style={styles.textbox}>
+                Give review
+              </Text>
+            </Link>
+          </Pressable>
+          <Pressable onPress={onSignOut}>
+            <Text style={styles.textbox}>
+              Sign out
+            </Text>
+          </Pressable>
+        </>
       );
     }
   };
