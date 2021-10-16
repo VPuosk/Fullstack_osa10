@@ -3,16 +3,38 @@ import { FlatList, View, StyleSheet, Pressable } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 import { useHistory } from 'react-router-native';
+import { Picker } from '@react-native-picker/picker';
+import { useState } from 'react';
 
 const styles = StyleSheet.create({
   separator: {
     height: 10,
   },
+  pickerStyle: {
+    margin: 10,
+    padding: 20,
+  }
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const RepositoryListContainer = ({ repositories }) => {
+const RepositorySorting = ({sort, setSort}) => {
+  return(
+    <Picker
+      style={styles.pickerStyle}
+      selectedValue={sort}
+      onValueChange={(itemValue) =>
+        setSort(itemValue)
+      }
+    >
+      <Picker.Item label="Latest repositories" value='default' />
+      <Picker.Item label="Highest rated repositories" value='highest' />
+      <Picker.Item label="Lowest rated repositories" value='lowest' />
+    </Picker>
+  );
+};
+
+export const RepositoryListContainer = ({ repositories, sort, setSort }) => {
   const history = useHistory();
   
   const repositoryNoodles = repositories
@@ -30,6 +52,7 @@ export const RepositoryListContainer = ({ repositories }) => {
       data={repositoryNoodles}
       ItemSeparatorComponent={ItemSeparator}
       // other props
+      ListHeaderComponent={<RepositorySorting sort={sort} setSort={setSort}/>}
       renderItem={({ item }) => (
         <Pressable onPress={() => handlePress(item.id)}>
             <RepositoryItem render={false} item={item} />
@@ -40,9 +63,14 @@ export const RepositoryListContainer = ({ repositories }) => {
 };
 
 const RepositoryList = () => {
-  const { repositories } = useRepositories();
+  const [sorting, setSorting] = useState();
+  const { repositories } = useRepositories(sorting);
 
-  return <RepositoryListContainer repositories={repositories} />;
+  return <RepositoryListContainer
+    repositories={repositories}
+    sort={sorting}
+    setSort={setSorting}
+  />;
 };
 
 export default RepositoryList;
