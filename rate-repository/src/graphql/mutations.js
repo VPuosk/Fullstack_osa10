@@ -24,3 +24,14 @@ export const GIVE_REVIEW = gql`
     }
   }
 `;
+
+export const SIGN_UP = gql`
+  mutation SignUp($username: String!, $password: String!) {
+    createUser(user: {
+      username: $username,
+      password: $password
+    }) {
+      username
+    }
+  }
+`;

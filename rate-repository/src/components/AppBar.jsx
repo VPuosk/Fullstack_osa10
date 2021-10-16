@@ -56,13 +56,22 @@ const AppBar = () => {
 
     if (data.authorizedUser === null) {
       return (
-        <Pressable>
-          <Link to="/SignIn">
-            <Text style={styles.textbox}>
-              Sign in
-            </Text>
-          </Link>
-        </Pressable>
+        <>
+          <Pressable>
+            <Link to="/SignIn">
+              <Text style={styles.textbox}>
+                Sign in
+              </Text>
+            </Link>
+          </Pressable>
+          <Pressable>
+            <Link to="/SignUp">
+              <Text style={styles.textbox}>
+                Sign up
+              </Text>
+            </Link>
+          </Pressable>
+        </>
       );
     } else {
       return (
