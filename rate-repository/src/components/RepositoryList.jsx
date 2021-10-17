@@ -5,6 +5,9 @@ import useRepositories from '../hooks/useRepositories';
 import { useHistory } from 'react-router-native';
 import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
+import { useDebounce } from 'use-debounce/lib';
+import TextInput from './TextInput';
+import theme from '../theme';
 
 const styles = StyleSheet.create({
   separator: {
@@ -12,29 +15,49 @@ const styles = StyleSheet.create({
   },
   pickerStyle: {
     margin: 10,
-    padding: 20,
+    padding: 10,
+  },
+  searchBar: {
+    backgroundColor: theme.colors.repositoryBackground,
+    padding: 6,
   }
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const RepositorySorting = ({sort, setSort}) => {
+const RepositorySorting = ({sort, setSort, search, setSearch}) => {
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+  };
+
   return(
-    <Picker
-      style={styles.pickerStyle}
-      selectedValue={sort}
-      onValueChange={(itemValue) =>
-        setSort(itemValue)
-      }
-    >
-      <Picker.Item label="Latest repositories" value='default' />
-      <Picker.Item label="Highest rated repositories" value='highest' />
-      <Picker.Item label="Lowest rated repositories" value='lowest' />
-    </Picker>
+    <>
+      <View style={styles.pickerStyle}>
+        <TextInput 
+          style={styles.searchBar}
+          testID='searchField'
+          name='searchField'
+          value={search}
+          onChange={handleSearchChange}
+        />
+      </View>
+      <Picker
+        style={styles.pickerStyle}
+        selectedValue={sort}
+        onValueChange={(itemValue) =>
+          setSort(itemValue)
+        }
+      >
+        <Picker.Item label="Latest repositories" value='default' />
+        <Picker.Item label="Highest rated repositories" value='highest' />
+        <Picker.Item label="Lowest rated repositories" value='lowest' />
+      </Picker>
+    </>
   );
 };
 
-export const RepositoryListContainer = ({ repositories, sort, setSort }) => {
+export const RepositoryListContainer = ({ repositories, sort, setSort, search, setSearch }) => {
   const history = useHistory();
   
   const repositoryNoodles = repositories
@@ -52,7 +75,14 @@ export const RepositoryListContainer = ({ repositories, sort, setSort }) => {
       data={repositoryNoodles}
       ItemSeparatorComponent={ItemSeparator}
       // other props
-      ListHeaderComponent={<RepositorySorting sort={sort} setSort={setSort}/>}
+      ListHeaderComponent={
+        <RepositorySorting
+          sort={sort}
+          setSort={setSort}
+          search={search}
+          setSearch={setSearch}
+        />
+      }
       renderItem={({ item }) => (
         <Pressable onPress={() => handlePress(item.id)}>
             <RepositoryItem render={false} item={item} />
@@ -64,12 +94,16 @@ export const RepositoryListContainer = ({ repositories, sort, setSort }) => {
 
 const RepositoryList = () => {
   const [sorting, setSorting] = useState();
-  const { repositories } = useRepositories(sorting);
+  const [search, setSearch] = useState('');
+  const [debouncedSearch] = useDebounce(search, 500);
+  const { repositories } = useRepositories(sorting, debouncedSearch);
 
   return <RepositoryListContainer
     repositories={repositories}
     sort={sorting}
     setSort={setSorting}
+    search={search}
+    setSearch={setSearch}
   />;
 };
 

@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import { GET_REPOSITORIES } from '../graphql/queries';
 
 
-const useRepositories = ( sorting ) => {
+const useRepositories = ( sorting, search ) => {
   
   let sortvariables = {
     'orderby': 'CREATED_AT',
@@ -23,7 +23,11 @@ const useRepositories = ( sorting ) => {
     }
   }
 
-  console.log(sortvariables);
+  if (search) {
+    sortvariables = {...sortvariables, 'keyword': search};
+  }
+
+
   const {loading, error, data} = useQuery(GET_REPOSITORIES, {
     fetchPolicy: 'cache-and-network',
     variables:  sortvariables
