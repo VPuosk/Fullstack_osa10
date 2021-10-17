@@ -6,21 +6,37 @@ const useRepositories = ( variables ) => {
   
   console.log('variables',variables);
  
-  const {loading, error, data} = useQuery(GET_REPOSITORIES, {
-    fetchPolicy: 'cache-and-network',
-    variables:  variables
+  const { data, loading, fetchMore, ...result } = useQuery(GET_REPOSITORIES, {
+    variables: variables,
+    fetchPolicy: 'cache-and-network'
   });
 
-  if (error) return `Error: ${error}`;
+  const handleFetchMore = () => {
+    //console.log('TEST');
+    if (!loading) {
+      console.log(data?.repositories);
+    }
+    const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
 
-  if(loading) {
-    return (null, loading);
-  }
-  
-  const repositories = data.repositories;
-  console.log('check');
+    if (!canFetchMore) {
+      return;
+    }
+    //console.log('TEST2');
 
-  return { repositories , loading };
+    fetchMore({
+      variables: {
+        after: data.repositories.pageInfo.endCursor,
+        ...variables,
+      },
+    });
+  };
+
+  return {
+    repositories: data?.repositories,
+    fetchMore: handleFetchMore,
+    loading,
+    ...result,
+  };
 };
 
 export default useRepositories;

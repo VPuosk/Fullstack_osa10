@@ -3,9 +3,9 @@ import { FlatList, View, StyleSheet, Pressable } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 import { useHistory } from 'react-router-native';
-import { Picker } from '@react-native-picker/picker';
+import { Picker as SelectPicker } from '@react-native-picker/picker';
 import { useState } from 'react';
-import { useDebounce } from 'use-debounce/lib';
+import { useDebounce } from 'use-debounce';
 import TextInput from './TextInput';
 import theme from '../theme';
 
@@ -45,8 +45,8 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositorySorting = ({sort, setSort, search, setSearch}) => {
 
-  const handleSearchChange = (event) => {
-    setSearch(event.target.value);
+  const handleSearchChange = (text) => {
+    setSearch(text);
   };
 
   return(
@@ -57,10 +57,10 @@ const RepositorySorting = ({sort, setSort, search, setSearch}) => {
           testID='searchField'
           name='searchField'
           value={search}
-          onChange={handleSearchChange}
+          onChangeText={handleSearchChange}
         />
       </View>
-      <Picker
+      <SelectPicker
         style={styles.pickerStyle}
         selectedValue={sort.sortingLabelID}
         onValueChange={(itemValue) => {
@@ -77,15 +77,22 @@ const RepositorySorting = ({sort, setSort, search, setSearch}) => {
           }
         }
       >
-        <Picker.Item label="Latest repositories" value='default'/>
-        <Picker.Item label="Highest rated repositories" value='highest'/>
-        <Picker.Item label="Lowest rated repositories" value='lowest'/>
-      </Picker>
+        <SelectPicker.Item label="Latest repositories" value='default'/>
+        <SelectPicker.Item label="Highest rated repositories" value='highest'/>
+        <SelectPicker.Item label="Lowest rated repositories" value='lowest'/>
+      </SelectPicker>
     </>
   );
 };
 
-export const RepositoryListContainer = ({ repositories, sort, setSort, search, setSearch }) => {
+export const RepositoryListContainer = ({
+  repositories,
+  onEndReach,
+  sort,
+  setSort,
+  search,
+  setSearch
+}) => {
   const history = useHistory();
   
   const repositoryNoodles = repositories
@@ -99,39 +106,55 @@ export const RepositoryListContainer = ({ repositories, sort, setSort, search, s
 
   //console.log(repositoryNoodles);
   return (
-    <FlatList
-      data={repositoryNoodles}
-      ItemSeparatorComponent={ItemSeparator}
-      // other props
-      ListHeaderComponent={
-        <RepositorySorting
-          sort={sort}
-          setSort={setSort}
-          search={search}
-          setSearch={setSearch}
-        />
-      }
-      renderItem={({ item }) => (
-        <Pressable onPress={() => handlePress(item.id)}>
-            <RepositoryItem render={false} item={item} />
-        </Pressable>
-      )}
-    />
+    <View style={{flex: 1, padding: 3}}>
+      <FlatList
+        data={repositoryNoodles}
+        ItemSeparatorComponent={ItemSeparator}
+        // other props
+        ListHeaderComponent={
+          <RepositorySorting
+            sort={sort}
+            setSort={setSort}
+            search={search}
+            setSearch={setSearch}
+          />
+        }
+        renderItem={({ item }) => (
+          <Pressable onPress={() => handlePress(item.id)}>
+              <RepositoryItem render={false} item={item} />
+          </Pressable>
+        )}
+        onEndReached={() => onEndReach()}
+        /*onEndReached={({ distanceFromEnd }) => {
+          console.log(distanceFromEnd);
+          if (distanceFromEnd < 0) return;
+          onEndReach();
+        }}*/
+        onEndReachedThreshold={0.5}
+      />
+    </View>
   );
 };
 
 const RepositoryList = () => {
   const [sorting, setSorting] = useState(repositoryModes.latest);
   const [search, setSearch] = useState('');
-  const [debouncedSearch] = useDebounce(search, 500);
-  const { repositories } = useRepositories({
+  const [debouncedSearch] = useDebounce(search, 1000);
+  const { repositories, fetchMore } = useRepositories({
+    test: search,
     keyword: debouncedSearch,
-    first: 3,
+    first: 8,
     ...sorting
   });
 
+  const onEndReach = () => {
+    console.log('End is reached');
+    fetchMore();
+  };
+
   return <RepositoryListContainer
     repositories={repositories}
+    onEndReach={onEndReach}
     sort={sorting}
     setSort={setSorting}
     search={search}
