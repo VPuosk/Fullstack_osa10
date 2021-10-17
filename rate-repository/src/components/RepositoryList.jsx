@@ -23,6 +23,21 @@ const styles = StyleSheet.create({
   }
 });
 
+const repositoryModes = {
+  latest: {
+    orderby: 'CREATED_AT',
+    direction: 'DESC'
+  },
+  highestRated: {
+    orderby: 'RATING_AVERAGE',
+    direction: 'DESC'
+  },
+  lowestRated: {
+    orderby: 'RATING_AVERAGE',
+    direction: 'ASC'
+  }
+};
+
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositorySorting = ({sort, setSort, search, setSearch}) => {
@@ -45,13 +60,23 @@ const RepositorySorting = ({sort, setSort, search, setSearch}) => {
       <Picker
         style={styles.pickerStyle}
         selectedValue={sort}
-        onValueChange={(itemValue) =>
-          setSort(itemValue)
+        onValueChange={(itemValue) => {
+            switch (itemValue) {
+              case 'highest':
+                setSort(repositoryModes.highestRated);
+                break;
+              case 'lowest':
+                setSort(repositoryModes.lowestRated);
+                break;
+              default:
+                setSort(repositoryModes.latest);
+            }
+          }
         }
       >
-        <Picker.Item label="Latest repositories" value='default' />
-        <Picker.Item label="Highest rated repositories" value='highest' />
-        <Picker.Item label="Lowest rated repositories" value='lowest' />
+        <Picker.Item label="Latest repositories" value='default'/>
+        <Picker.Item label="Highest rated repositories" value='highest'/>
+        <Picker.Item label="Lowest rated repositories" value='lowest'/>
       </Picker>
     </>
   );
@@ -93,10 +118,14 @@ export const RepositoryListContainer = ({ repositories, sort, setSort, search, s
 };
 
 const RepositoryList = () => {
-  const [sorting, setSorting] = useState();
+  const [sorting, setSorting] = useState(repositoryModes.latest);
   const [search, setSearch] = useState('');
   const [debouncedSearch] = useDebounce(search, 500);
-  const { repositories } = useRepositories(sorting, debouncedSearch);
+  const { repositories } = useRepositories({
+    keyword: debouncedSearch,
+    first: 3,
+    ...sorting
+  });
 
   return <RepositoryListContainer
     repositories={repositories}
