@@ -25,14 +25,17 @@ const styles = StyleSheet.create({
 
 const repositoryModes = {
   latest: {
+    sortingLabelID: 'default',
     orderby: 'CREATED_AT',
     direction: 'DESC'
   },
   highestRated: {
+    sortingLabelID: 'highest',
     orderby: 'RATING_AVERAGE',
     direction: 'DESC'
   },
   lowestRated: {
+    sortingLabelID: 'lowest',
     orderby: 'RATING_AVERAGE',
     direction: 'ASC'
   }
@@ -59,7 +62,7 @@ const RepositorySorting = ({sort, setSort, search, setSearch}) => {
       </View>
       <Picker
         style={styles.pickerStyle}
-        selectedValue={sort}
+        selectedValue={sort.sortingLabelID}
         onValueChange={(itemValue) => {
             switch (itemValue) {
               case 'highest':

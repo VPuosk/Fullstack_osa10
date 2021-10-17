@@ -12,6 +12,12 @@ export const GET_REPOSITORIES = gql`
         node {
           ...RepositoryDetails 
         }
+        cursor
+      }
+      pageInfo {
+        endCursor
+        startCursor
+        hasNextPage
       }
     }
   }
