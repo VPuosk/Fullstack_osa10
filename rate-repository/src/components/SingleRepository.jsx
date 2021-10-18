@@ -75,7 +75,7 @@ const ReviewItem = ({ review }) => {
 
 const SingleRepository = () => {
   const { id } = useParams();
-  const { repository } = useRepository(id);
+  const { repository, fetchMore } = useRepository({ id:id, first:1 });
 
   
   if (!repository) {
@@ -85,6 +85,11 @@ const SingleRepository = () => {
       </View>
     );
   }
+
+  const onEndReach = () => {
+    fetchMore();
+    //console.log('review end reached');
+  };
 
   //console.log(repository);
   //console.log(repository.reviews.edges.map(edge => edge.node));
@@ -97,6 +102,8 @@ const SingleRepository = () => {
       keyExtractor={({ id }) => id}
       ListHeaderComponent={() => <RepositoryItem render={true} item={repository} />}
       ItemSeparatorComponent={ItemSeparator}
+      onEndReached={() => onEndReach()}
+      onEndReachedThreshold={0.5}
     />
   );
 };
