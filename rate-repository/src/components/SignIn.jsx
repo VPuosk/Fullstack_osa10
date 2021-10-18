@@ -77,7 +77,6 @@ const SignIn = () => {
 
     try {
       await signIn({ username, password });
-      //console.log(data);
     } catch (e) {
       console.log(e);
     }

@@ -38,27 +38,12 @@ const AppBar = () => {
   const onSignOut = async () => {
     try {
       await signOut();
-      //console.log(data);
     } catch (e) {
       console.log(e);
     }
   };
 
   const viewPerAuth = () => {
-    /*
-    if (loading) {
-      return (
-        null
-      );
-    }
-
-    if (error) {
-      console.log(error);
-      return (
-        null
-      );
-    }
-    */
 
     if (!authorizedUser) {
       return (

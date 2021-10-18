@@ -37,9 +37,6 @@ const MyReviewsContainer = ({ data }) => {
 
 const MyReviews = () => {
   const { authorizedUser } = useUserReviews();
-
-  //console.log(authorizedUser);
-
   return (
     <MyReviewsContainer data={authorizedUser}/>
   );

@@ -100,11 +100,9 @@ export const RepositoryListContainer = ({
     : [];
 
   const handlePress = (id) => {
-    //console.log("what",id);
     history.push(`/Repository/${id}`);
   };
 
-  //console.log(repositoryNoodles);
   return (
     <View style={{flex: 1, padding: 3}}>
       <FlatList
@@ -125,11 +123,6 @@ export const RepositoryListContainer = ({
           </Pressable>
         )}
         onEndReached={() => onEndReach()}
-        /*onEndReached={({ distanceFromEnd }) => {
-          console.log(distanceFromEnd);
-          if (distanceFromEnd < 0) return;
-          onEndReach();
-        }}*/
         onEndReachedThreshold={0.5}
       />
     </View>
@@ -148,7 +141,6 @@ const RepositoryList = () => {
   });
 
   const onEndReach = () => {
-    //console.log('End is reached');
     fetchMore();
   };
 

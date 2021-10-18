@@ -8,8 +8,6 @@ const useUserReviews = (variables) => {
     variables: {...variables, includeReviews: true},
   });
 
-  //console.log(data);
-
   return {
     authorizedUser: data?.authorizedUser,
     loading,

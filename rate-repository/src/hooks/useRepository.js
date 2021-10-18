@@ -9,16 +9,11 @@ const useRepository = (variables) => {
   });
 
   const handleFetchMore = () => {
-    //console.log('TEST');
-    //if (!loading) {
-    //  console.log(data?.repository);
-    //}
     const canFetchMore = !loading && data?.repository.reviews.pageInfo.hasNextPage;
 
     if (!canFetchMore) {
       return;
     }
-    //console.log('TEST2');
 
     fetchMore({
       variables: {

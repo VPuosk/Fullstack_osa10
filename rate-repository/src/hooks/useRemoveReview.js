@@ -6,7 +6,6 @@ const useRemoveReview = () => {
   const [mutate, result] = useMutation(REMOVE_REVIEW);
 
   const removeReview = async ({ id }) => {
-    //console.log(ownername, rating, repository, reviewText);
     await mutate({
       variables: {
         id: id

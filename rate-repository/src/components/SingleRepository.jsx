@@ -30,11 +30,7 @@ const SingleRepository = () => {
 
   const onEndReach = () => {
     fetchMore();
-    //console.log('review end reached');
   };
-
-  //console.log(repository);
-  //console.log(repository.reviews.edges.map(edge => edge.node));
   const reviews = repository.reviews.edges.map(edge => edge.node);
 
   return (

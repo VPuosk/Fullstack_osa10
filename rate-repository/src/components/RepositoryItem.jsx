@@ -65,7 +65,6 @@ const SingleRepositoryItem = ({ render, item }) => {
     Linking.openURL(item.url);
   };
 
-  //console.log('maybeRender?');
   return (
     <Pressable onPress={handleIt}>
       <View style={styles.container}>
@@ -78,7 +77,6 @@ const SingleRepositoryItem = ({ render, item }) => {
 };
 
 const RepositoryItem = ({ render, item }) => {
-  //console.log(item.url);
   return (
     <View testID={item.id} key={item.id} style={styles.verticalcontainer}>
       <View style={styles.container}>

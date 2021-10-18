@@ -101,7 +101,6 @@ const SignUp = () => {
   const [signUp] = useSignUp();
 
   const onSubmit = async (values) => {
-    //console.log(values);
     const { username, password } = values;
 
     try {
