@@ -1,13 +1,8 @@
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import Text from "./Text";
 
-import React from 'react';
-import RepositoryItem from './RepositoryItem';
-import useRepository from '../hooks/useRepository';
-import { useParams } from 'react-router-native';
-import Text from './Text';
-import { FlatList, View, StyleSheet } from 'react-native';
-import ReviewItem from './ReviewItem';
-
-import theme from '../theme';
+import theme from "../theme";
 
 const styles = StyleSheet.create({
   roundedBox: {
@@ -43,10 +38,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ItemSeparator = () => <View style={styles.separator} />;
-
-/*const ReviewItem = ({ review }) => {
-  //console.log(review);
+const ReviewItem = ({ review }) => {
   const date = new Date(review.createdAt);
   return (
     <View style={styles.mainContainer}>
@@ -73,41 +65,5 @@ const ItemSeparator = () => <View style={styles.separator} />;
     </View>
   );
 };
-*/
 
-const SingleRepository = () => {
-  const { id } = useParams();
-  const { repository, fetchMore } = useRepository({ id:id, first:1 });
-
-  
-  if (!repository) {
-    return (
-      <View>
-        <Text>Data loading...</Text>
-      </View>
-    );
-  }
-
-  const onEndReach = () => {
-    fetchMore();
-    //console.log('review end reached');
-  };
-
-  //console.log(repository);
-  //console.log(repository.reviews.edges.map(edge => edge.node));
-  const reviews = repository.reviews.edges.map(edge => edge.node);
-
-  return (
-    <FlatList 
-      data={reviews}
-      renderItem={({item}) => <ReviewItem review={item} />}
-      keyExtractor={({ id }) => id}
-      ListHeaderComponent={() => <RepositoryItem render={true} item={repository} />}
-      ItemSeparatorComponent={ItemSeparator}
-      onEndReached={() => onEndReach()}
-      onEndReachedThreshold={0.5}
-    />
-  );
-};
-
-export default SingleRepository;
+export default ReviewItem;

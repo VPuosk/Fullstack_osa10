@@ -8,6 +8,7 @@ import SignIn from './SignIn';
 import SingleRepository from './SingleRepository';
 import Review from './Review';
 import SignUp from './SignUp';
+import MyReviews from './MyReviews';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,6 +37,9 @@ const Main = () => {
         </Route>
         <Route path="/Review">
           <Review />
+        </Route>
+        <Route path="/MyReviews">
+          <MyReviews />
         </Route>
         <Redirect to="/" />
       </Switch>

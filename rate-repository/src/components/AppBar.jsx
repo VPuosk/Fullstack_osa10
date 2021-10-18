@@ -4,9 +4,10 @@ import Constants from 'expo-constants';
 import theme from '../theme';
 import Text from './Text';
 import { Link } from 'react-router-native';
-import { useQuery } from '@apollo/client';
-import { GET_AUTHORIZATION } from '../graphql/queries';
+//import { useQuery } from '@apollo/client';
+//import { GET_AUTHORIZED_USER } from '../graphql/queries';
 import useSignOut from '../hooks/useSignOut';
+import useAuthorizedUser from '../hooks/useAuthorizedUser';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,9 +26,12 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
-  const {loading, error, data} = useQuery(GET_AUTHORIZATION, {
+  const { authorizedUser } = useAuthorizedUser();
+  
+  /*const {loading, error, data} = useQuery(GET_AUTHORIZED_USER, {
     fetchPolicy: 'cache-and-network',
   });
+  */
 
   const signOut = useSignOut();
 
@@ -41,6 +45,7 @@ const AppBar = () => {
   };
 
   const viewPerAuth = () => {
+    /*
     if (loading) {
       return (
         null
@@ -53,8 +58,9 @@ const AppBar = () => {
         null
       );
     }
+    */
 
-    if (data.authorizedUser === null) {
+    if (!authorizedUser) {
       return (
         <>
           <Pressable>
@@ -83,11 +89,23 @@ const AppBar = () => {
               </Text>
             </Link>
           </Pressable>
+          <Pressable>
+            <Link to="/MyReviews">
+              <Text style={styles.textbox}>
+                My reviews
+              </Text>
+            </Link>
+          </Pressable>
           <Pressable onPress={onSignOut}>
             <Text style={styles.textbox}>
               Sign out
             </Text>
           </Pressable>
+          <View>
+            <Text style={styles.textbox}>
+              Signed in as {authorizedUser.username}
+            </Text>
+          </View>
         </>
       );
     }
