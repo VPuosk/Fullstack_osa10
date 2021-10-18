@@ -28,7 +28,17 @@ const theme = {
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'row',
-    backgroundColor: '#55d',
+    backgroundColor: '#22d',
+    color: '#ccc',
+    padding: 10,
+    margin: 5
+  },
+
+  bigredbox: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    backgroundColor: '#d22',
     color: '#ccc',
     padding: 10,
     margin: 5

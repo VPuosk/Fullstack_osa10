@@ -6,6 +6,7 @@ const useReview = () => {
   const apolloClient = useApolloClient();
   const history = useHistory();
   const [mutate, result] = useMutation(GIVE_REVIEW);
+  console.log('ee');
 
   const giveReview = async ({ ownername, rating, repository, reviewText }) => {
     console.log(ownername, rating, repository, reviewText);

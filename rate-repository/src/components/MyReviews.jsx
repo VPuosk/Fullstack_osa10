@@ -30,7 +30,7 @@ const MyReviewsContainer = ({ data }) => {
     <FlatList
       data={reviews}
       ItemSeparatorComponent={ItemSeparator}
-      renderItem={({item}) => <ReviewItem review={item} />}
+      renderItem={({item}) => <ReviewItem review={item} authorized={true}/>}
     />
   );
 };
@@ -38,7 +38,7 @@ const MyReviewsContainer = ({ data }) => {
 const MyReviews = () => {
   const { authorizedUser } = useUserReviews();
 
-  console.log(authorizedUser);
+  //console.log(authorizedUser);
 
   return (
     <MyReviewsContainer data={authorizedUser}/>

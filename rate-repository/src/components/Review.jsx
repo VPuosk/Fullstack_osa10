@@ -55,6 +55,8 @@ const styles = StyleSheet.create({
 }); 
 
 const ReviewForm = ({onSubmit}) => {
+  console.log('d');
+
   return (
     <View>
       <FormikTextInput
@@ -74,7 +76,7 @@ const ReviewForm = ({onSubmit}) => {
         style={styles.inputbox}
         name="rating"
         placeholder='Rating between 0 and 100'
-        keyboardType='numeric'
+        //keyboardType='numeric'
       />
       <FormikTextInput
         testID="reviewField"
@@ -99,6 +101,8 @@ const ReviewForm = ({onSubmit}) => {
 };
 
 export const ReviewContainer = ({ onSubmit }) => {
+  console.log('c');
+
   return (
     <Formik
       initialValues={initialValues}
@@ -110,7 +114,9 @@ export const ReviewContainer = ({ onSubmit }) => {
 };
 
 const Review = () => {
+  console.log('re');
   const [ review ] = useReview();
+  console.log('a');
 
   const onSubmit = async (values) => {
     //console.log(values);
@@ -123,6 +129,7 @@ const Review = () => {
       console.log(e);
     }
   };
+  console.log('b');
 
   return (
     <ReviewContainer onSubmit={onSubmit} />

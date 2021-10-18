@@ -148,7 +148,7 @@ const RepositoryList = () => {
   });
 
   const onEndReach = () => {
-    console.log('End is reached');
+    //console.log('End is reached');
     fetchMore();
   };
 

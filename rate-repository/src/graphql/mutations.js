@@ -35,3 +35,9 @@ export const SIGN_UP = gql`
     }
   }
 `;
+
+export const REMOVE_REVIEW = gql`
+  mutation RemoveReview($id: ID!) {
+    deleteReview(id: $id)
+  }
+`;

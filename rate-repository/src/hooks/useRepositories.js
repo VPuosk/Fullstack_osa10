@@ -4,7 +4,7 @@ import { GET_REPOSITORIES } from '../graphql/queries';
 
 const useRepositories = ( variables ) => {
   
-  console.log('variables',variables);
+  //console.log('variables',variables);
  
   const { data, loading, fetchMore, ...result } = useQuery(GET_REPOSITORIES, {
     variables: variables,
@@ -13,9 +13,9 @@ const useRepositories = ( variables ) => {
 
   const handleFetchMore = () => {
     //console.log('TEST');
-    if (!loading) {
-      console.log(data?.repositories);
-    }
+    //if (!loading) {
+    //  console.log(data?.repositories);
+    //}
     const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
 
     if (!canFetchMore) {
